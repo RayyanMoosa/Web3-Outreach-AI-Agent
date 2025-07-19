@@ -1,5 +1,4 @@
 # Web3-Outreach-AI-Agent
-# Web3 Outreach Agent 🤖📩
 
 An AI-powered outreach system that finds early-stage Web3 founders, writes personalized emails for them, and sends the messages automatically — all hands-free.
 
