@@ -1,0 +1,33 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+URL = 'https://www.producthunt.com/topics/web3'
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36"
+}
+
+response = requests.get(URL, headers=headers)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+startups = []
+
+for item in soup.select('div.styles_postItem__m2bGu')[:10]:  # Select first 10
+    try:
+        name = item.select_one('h3.styles_title__fT7Qu').get_text(strip=True)
+        tagline = item.select_one('p.styles_subtitle__gWspX').get_text(strip=True)
+        link = 'https://www.producthunt.com' + item.select_one('a.styles_postLink__i8zXk')['href']
+        startups.append({'name': name, 'tagline': tagline, 'url': link})
+    except Exception as e:
+        print(f"Skipping one item due to error: {e}")
+
+df = pd.DataFrame(startups)
+df.to_csv('producthunt_web3_startups.csv', index=False)
+
+print("✅ Scraped Product Hunt and saved 10 web3 startups to producthunt_web3_startups.csv")
+python3 scrape_producthunt.py
+
+
+
+
